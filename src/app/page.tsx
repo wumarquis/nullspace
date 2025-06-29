@@ -1,5 +1,5 @@
-import NullspaceApp from '../components/NullspaceApp';
+import MinimalChatApp from '../components/MinimalChatApp';
 
 export default function Home() {
-  return <NullspaceApp />;
+  return <MinimalChatApp />;
 }
