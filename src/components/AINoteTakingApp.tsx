@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Menu, X, Search, FileText, Plus, Edit3, Save, Trash2, MessageSquare, Bot, User, Calendar } from 'lucide-react';
+import { Send, Menu, X, Search, FileText, Plus, Edit3, Save, Trash2, MessageSquare, Bot, User } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -45,6 +45,22 @@ const dummyNotes: Note[] = [
     createdAt: new Date(Date.now() - 259200000),
     updatedAt: new Date(Date.now() - 14400000),
     tags: ['react', 'javascript', 'best-practices']
+  },
+  {
+    id: '4',
+    title: 'Design System Guidelines',
+    content: '# Design System Guidelines\n\nCore principles for maintaining consistency across our products.',
+    createdAt: new Date(Date.now() - 345600000),
+    updatedAt: new Date(Date.now() - 21600000),
+    tags: ['design', 'system']
+  },
+  {
+    id: '5',
+    title: 'API Documentation',
+    content: '# API Documentation\n\nComprehensive guide for our REST API endpoints.',
+    createdAt: new Date(Date.now() - 432000000),
+    updatedAt: new Date(Date.now() - 28800000),
+    tags: ['api', 'documentation']
   }
 ];
 
@@ -249,25 +265,25 @@ export default function AINoteTakingApp() {
   );
 
   return (
-    <div className="flex h-screen bg-[#1e1e1e]">
+    <div className="flex h-screen app-background">
       {/* Notes Sidebar */}
-      <div className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 ease-in-out overflow-hidden reference-panel border-r border-[#3a3a3a]`}>
+      <div className={`${sidebarOpen ? 'sidebar-spacious' : 'w-0'} transition-all duration-300 ease-in-out overflow-hidden panel-background`}>
         <div className="h-full flex flex-col">
           {/* Sidebar Header */}
-          <div className="p-6 border-b border-[#3a3a3a]">
+          <div className="p-6 glass-header">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-medium reference-text-primary tracking-tight">Notes</h2>
+              <h2 className="text-lg font-medium text-primary tracking-tight">Notes</h2>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handleCreateNote}
-                  className="p-2 rounded hover:bg-white/5 reference-text-secondary hover:text-[#e0e0e0] transition-colors"
+                  className="p-2 rounded-lg refined-button hover:scale-105"
                   title="Create new note"
                 >
                   <Plus size={16} />
                 </button>
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="p-2 rounded hover:bg-white/5 reference-text-secondary hover:text-[#e0e0e0] transition-colors"
+                  className="p-2 rounded-lg refined-button hover:scale-105"
                 >
                   <X size={16} />
                 </button>
@@ -276,54 +292,34 @@ export default function AINoteTakingApp() {
             
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 reference-text-secondary" size={14} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" size={16} />
               <input
                 type="text"
                 placeholder="Search notes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 text-sm reference-input rounded reference-text-primary placeholder-[#707070] focus:border-[#4a4a4a] focus:bg-[#252525]"
+                className="w-full pl-10 pr-4 py-3 refined-input text-sm"
               />
             </div>
           </div>
 
           {/* Notes List */}
-          <div className="flex-1 overflow-y-auto p-4">
-            <div className="space-y-2">
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="space-y-3">
               {filteredNotes.map((note) => (
                 <div
                   key={note.id}
                   onClick={() => handleNoteSelect(note)}
-                  className={`reference-note-card p-4 cursor-pointer group transition-all ${
-                    selectedNote?.id === note.id ? 'selected' : ''
-                  }`}
+                  className={`note-title-only ${selectedNote?.id === note.id ? 'selected' : ''}`}
                 >
-                  <div className="flex items-start space-x-3">
-                    <FileText size={16} className={`mt-0.5 flex-shrink-0 ${
-                      selectedNote?.id === note.id ? 'reference-accent' : 'reference-text-secondary group-hover:text-[#4a9eff]'
+                  <div className="flex items-center space-x-3">
+                    <FileText size={16} className={`flex-shrink-0 ${
+                      selectedNote?.id === note.id ? 'text-accent' : 'text-secondary'
                     }`} />
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium reference-text-primary truncate group-hover:text-white">
+                      <h3 className="text-sm font-medium truncate">
                         {note.title}
                       </h3>
-                      <p className="text-xs reference-text-secondary mt-1 line-clamp-2 leading-relaxed">
-                        {note.content.replace(/^#.*$/gm, '').trim().substring(0, 100)}...
-                      </p>
-                      <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center text-xs reference-text-muted">
-                          <Calendar size={10} className="mr-1" />
-                          {note.updatedAt.toLocaleDateString()}
-                        </div>
-                        {note.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {note.tags.slice(0, 2).map(tag => (
-                              <span key={tag} className="reference-tag">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -337,28 +333,28 @@ export default function AINoteTakingApp() {
       <div className="flex-1 flex">
         {/* Note Editor Panel */}
         {selectedNote && (
-          <div className="w-1/2 border-r border-[#3a3a3a] flex flex-col">
+          <div className="w-1/2 border-r border-white/[0.06] flex flex-col content-clean">
             {/* Note Header */}
-            <div className="reference-header px-6 py-4">
+            <div className="glass-header px-6 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <FileText size={16} className="reference-accent" />
+                  <FileText size={16} className="text-accent" />
                   {isEditingNote ? (
                     <input
                       type="text"
                       value={editingNoteTitle}
                       onChange={(e) => setEditingNoteTitle(e.target.value)}
-                      className="text-sm font-medium bg-transparent border-none outline-none reference-text-primary focus:text-white"
+                      className="text-sm font-medium bg-transparent border-none outline-none text-primary focus:text-white"
                     />
                   ) : (
-                    <h2 className="text-sm font-medium reference-text-primary tracking-tight">{selectedNote.title}</h2>
+                    <h2 className="text-sm font-medium text-primary tracking-tight">{selectedNote.title}</h2>
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
                   {isEditingNote ? (
                     <button
                       onClick={handleSaveNote}
-                      className="p-2 rounded hover:bg-white/5 reference-accent transition-colors"
+                      className="p-2 rounded-lg refined-button text-accent hover:scale-105"
                       title="Save note"
                     >
                       <Save size={14} />
@@ -366,7 +362,7 @@ export default function AINoteTakingApp() {
                   ) : (
                     <button
                       onClick={handleEditNote}
-                      className="p-2 rounded hover:bg-white/5 reference-text-secondary hover:text-[#e0e0e0] transition-colors"
+                      className="p-2 rounded-lg refined-button hover:scale-105"
                       title="Edit note"
                     >
                       <Edit3 size={14} />
@@ -374,7 +370,7 @@ export default function AINoteTakingApp() {
                   )}
                   <button
                     onClick={handleDeleteNote}
-                    className="p-2 rounded hover:bg-white/5 reference-text-secondary hover:text-red-400 transition-colors"
+                    className="p-2 rounded-lg refined-button hover:text-red-400 hover:scale-105"
                     title="Delete note"
                   >
                     <Trash2 size={14} />
@@ -384,18 +380,18 @@ export default function AINoteTakingApp() {
             </div>
 
             {/* Note Content */}
-            <div className="flex-1 p-6 bg-[#1e1e1e]">
+            <div className="flex-1 p-6">
               {isEditingNote ? (
                 <textarea
                   value={editingNoteContent}
                   onChange={(e) => setEditingNoteContent(e.target.value)}
-                  className="w-full h-full bg-transparent border-none outline-none reference-text-primary resize-none font-mono text-sm leading-relaxed"
+                  className="w-full h-full bg-transparent border-none outline-none text-primary resize-none font-mono text-sm leading-relaxed"
                   placeholder="Write your note here..."
                 />
               ) : (
                 <div className="h-full overflow-y-auto">
                   <div className="prose prose-invert max-w-none">
-                    <pre className="whitespace-pre-wrap text-sm leading-relaxed reference-text-primary font-mono">
+                    <pre className="whitespace-pre-wrap text-sm leading-relaxed text-primary font-mono">
                       {selectedNote.content}
                     </pre>
                   </div>
@@ -406,75 +402,79 @@ export default function AINoteTakingApp() {
         )}
 
         {/* Chat Panel */}
-        <div className={`${selectedNote ? 'w-1/2' : 'w-full'} flex flex-col transition-all duration-300 ease-in-out`}>
+        <div className={`${selectedNote ? 'w-1/2' : 'w-full'} flex flex-col transition-all duration-300 ease-in-out content-clean`}>
           {/* Chat Header */}
-          <div className="reference-header px-6 py-4">
+          <div className="glass-header px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 {!sidebarOpen && (
                   <button
                     onClick={() => setSidebarOpen(true)}
-                    className="p-2 rounded hover:bg-white/5 reference-text-secondary hover:text-[#e0e0e0] mr-2 transition-colors"
+                    className="p-2 rounded-lg refined-button hover:scale-105 mr-2"
                   >
                     <Menu size={16} />
                   </button>
                 )}
-                <MessageSquare size={16} className="reference-accent" />
-                <h2 className="text-sm font-medium reference-text-primary tracking-tight">
+                <MessageSquare size={16} className="text-accent" />
+                <h2 className="text-sm font-medium text-primary tracking-tight">
                   AI Assistant {selectedNote && `• ${selectedNote.title}`}
                 </h2>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="reference-status-dot"></div>
-                <span className="text-xs reference-text-secondary">Online</span>
+              <div className="flex items-center space-x-3">
+                <div className="status-indicator"></div>
+                <span className="text-xs text-secondary">Online</span>
               </div>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto bg-[#1e1e1e]">
+          <div className="flex-1 overflow-y-auto">
             <div className="px-6 py-8">
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex items-start space-x-3 ${message.role === 'user' ? '' : ''}`}
+                    className="flex items-start space-x-4"
                   >
                     {/* Avatar */}
-                    <div className={message.role === 'user' ? 'reference-avatar-user' : 'reference-avatar-ai'}>
+                    <div className={message.role === 'user' ? 'avatar-user' : 'avatar-ai'}>
                       {message.role === 'user' ? <User size={14} /> : <Bot size={14} />}
                     </div>
 
                     {/* Message Content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-sm font-medium reference-text-primary">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="text-sm font-medium text-primary">
                           {message.role === 'user' ? 'You' : 'AI Assistant'}
                         </span>
-                        <span className="text-xs reference-text-muted">
+                        <span className="text-xs text-muted">
                           {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                      <div className="text-sm leading-relaxed reference-text-primary whitespace-pre-wrap">
-                        {message.content}
+                      <div className={`p-4 ${message.role === 'user' ? 'message-user' : 'message-ai'}`}>
+                        <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                          {message.content}
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))}
                 
                 {isLoading && (
-                  <div className="flex items-start space-x-3">
-                    <div className="reference-avatar-ai">
+                  <div className="flex items-start space-x-4">
+                    <div className="avatar-ai">
                       <Bot size={14} />
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-sm font-medium reference-text-primary">AI Assistant</span>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="text-sm font-medium text-primary">AI Assistant</span>
                       </div>
-                      <div className="flex space-x-1">
-                        <div className="reference-loading-dot animate-bounce" />
-                        <div className="reference-loading-dot animate-bounce" style={{ animationDelay: '0.1s' }} />
-                        <div className="reference-loading-dot animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      <div className="message-ai p-4">
+                        <div className="flex space-x-1">
+                          <div className="loading-dot animate-bounce" />
+                          <div className="loading-dot animate-bounce" style={{ animationDelay: '0.1s' }} />
+                          <div className="loading-dot animate-bounce" style={{ animationDelay: '0.2s' }} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -486,7 +486,7 @@ export default function AINoteTakingApp() {
           </div>
 
           {/* Input Area */}
-          <div className="reference-input-area p-6">
+          <div className="glass-footer p-6">
             <div className="flex items-end space-x-4">
               <div className="flex-1 relative">
                 <textarea
@@ -494,20 +494,20 @@ export default function AINoteTakingApp() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder={selectedNote ? `Ask about "${selectedNote.title}" or request note updates...` : "Ask me anything or request to create a note..."}
-                  className="w-full px-4 py-3 pr-14 reference-input rounded resize-none reference-text-primary placeholder-[#707070] focus:border-[#4a4a4a] focus:bg-[#252525] max-h-32"
+                  className="w-full px-4 py-3 pr-14 refined-input resize-none max-h-32 text-sm"
                   rows={1}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="absolute right-2 bottom-2 p-2.5 rounded bg-[#4a9eff] hover:bg-[#4a9eff]/90 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all"
+                  className="absolute right-2 bottom-2 p-2.5 rounded-lg accent-button"
                 >
                   <Send size={14} />
                 </button>
               </div>
             </div>
             
-            <div className="flex justify-between items-center mt-3 text-xs reference-text-muted">
+            <div className="flex justify-between items-center mt-4 text-xs text-muted">
               <span>Try: "Create a note about...", "Add this to my note", or ask questions</span>
               <span className="tabular-nums">{inputValue.length} characters</span>
             </div>
