@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Menu, X, Search, FileText } from 'lucide-react';
+import { Send, Menu, X, Search, FileText, MessageSquare } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -58,6 +58,18 @@ const dummyNotes: Note[] = [
     content: 'Important findings and references from recent papers...',
     updatedAt: new Date(Date.now() - 259200000),
   },
+  {
+    id: '4',
+    title: 'Algorithm Analysis',
+    content: 'Performance comparisons and optimization strategies...',
+    updatedAt: new Date(Date.now() - 345600000),
+  },
+  {
+    id: '5',
+    title: 'Data Processing Pipeline',
+    content: 'ETL processes and data transformation workflows...',
+    updatedAt: new Date(Date.now() - 432000000),
+  },
 ];
 
 export default function MinimalChatApp() {
@@ -95,7 +107,7 @@ export default function MinimalChatApp() {
     setTimeout(() => {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: `I understand you're asking about "${inputValue}". This is a simulated response that demonstrates the clean, minimal interface design. The actual implementation would connect to your preferred AI service.`,
+        content: `I understand you're asking about "${inputValue}". This is a simulated response that demonstrates the sleek dark theme interface design. The actual implementation would connect to your preferred AI service with sophisticated processing capabilities.`,
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -118,53 +130,53 @@ export default function MinimalChatApp() {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-[#1A1B1E]">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 ease-in-out overflow-hidden bg-white border-r border-gray-200`}>
+      <div className={`${sidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 ease-in-out overflow-hidden metallic-gradient border-r border-[#4A6FA5]/20`}>
         <div className="h-full flex flex-col">
           {/* Sidebar Header */}
-          <div className="p-4 border-b border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-medium text-gray-900">Notes</h2>
+          <div className="p-6 border-b border-[#4A6FA5]/10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-medium text-[#E5E5E5] tracking-tight">Notes</h2>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="p-1 rounded-md hover:bg-gray-100 text-gray-500"
+                className="p-2 rounded-sm hover:bg-white/5 text-[#B0B0B0] hover:text-[#E5E5E5] tech-shadow"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
             
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#B0B0B0]" size={14} />
               <input
                 type="text"
                 placeholder="Search notes..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full pl-9 pr-3 py-2.5 text-sm bg-[#1A1B1E]/50 border border-[#4A6FA5]/20 rounded-sm text-[#E5E5E5] placeholder-[#B0B0B0] focus:border-[#4A6FA5]/50 focus:bg-[#1A1B1E]/80 tech-shadow"
               />
             </div>
           </div>
 
           {/* Notes List */}
           <div className="flex-1 overflow-y-auto p-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               {filteredNotes.map((note) => (
                 <div
                   key={note.id}
-                  className="p-3 rounded-md hover:bg-gray-50 cursor-pointer group"
+                  className="p-3 rounded-sm hover:bg-white/5 cursor-pointer group metallic-border hover:border-[#4A6FA5]/30 tech-shadow"
                 >
                   <div className="flex items-start space-x-3">
-                    <FileText size={16} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                    <FileText size={14} className="text-[#B0B0B0] group-hover:text-[#4A6FA5] mt-0.5 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                      <h3 className="text-sm font-medium text-[#E5E5E5] truncate group-hover:text-white">
                         {note.title}
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                      <p className="text-xs text-[#B0B0B0] mt-1 line-clamp-2 leading-relaxed">
                         {note.content}
                       </p>
-                      <p className="text-xs text-gray-400 mt-2">
+                      <p className="text-xs text-[#B0B0B0]/70 mt-2">
                         {note.updatedAt.toLocaleDateString()}
                       </p>
                     </div>
@@ -179,40 +191,47 @@ export default function MinimalChatApp() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-4 py-3">
+        <div className="metallic-gradient border-b border-[#4A6FA5]/20 px-6 py-4 tech-shadow">
           <div className="flex items-center">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-md hover:bg-gray-100 text-gray-500 mr-3"
+              className="p-2 rounded-sm hover:bg-white/5 text-[#B0B0B0] hover:text-[#E5E5E5] mr-4 tech-shadow"
             >
-              <Menu size={18} />
+              <Menu size={16} />
             </button>
-            <h1 className="text-lg font-medium text-gray-900">AI Assistant</h1>
+            <div className="flex items-center space-x-3">
+              <MessageSquare size={18} className="text-[#4A6FA5]" />
+              <h1 className="text-lg font-medium text-[#E5E5E5] tracking-tight">AI Assistant</h1>
+            </div>
+            <div className="ml-auto flex items-center space-x-2">
+              <div className="w-2 h-2 bg-[#4A6FA5] rounded-full subtle-glow"></div>
+              <span className="text-xs text-[#B0B0B0]">Online</span>
+            </div>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-3xl mx-auto px-4 py-6">
-            <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto bg-[#1A1B1E]">
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <div className="space-y-8">
               {messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[80%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
+                  <div className={`max-w-[75%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
                     <div
-                      className={`rounded-lg px-4 py-3 ${
+                      className={`rounded-sm px-5 py-4 ${
                         message.role === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white border border-gray-200 text-gray-900'
+                          ? 'bg-[#4A6FA5] text-white tech-shadow-lg'
+                          : 'metallic-border text-[#E5E5E5] tech-shadow'
                       }`}
                     >
-                      <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap font-normal">
                         {message.content}
                       </div>
                     </div>
-                    <div className={`text-xs text-gray-500 mt-1 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
+                    <div className={`text-xs text-[#B0B0B0] mt-2 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
@@ -221,11 +240,11 @@ export default function MinimalChatApp() {
               
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-gray-200 rounded-lg px-4 py-3 max-w-xs">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  <div className="metallic-border rounded-sm px-5 py-4 max-w-xs tech-shadow">
+                    <div className="flex space-x-1.5">
+                      <div className="w-2 h-2 bg-[#4A6FA5] rounded-full animate-bounce opacity-60" />
+                      <div className="w-2 h-2 bg-[#4A6FA5] rounded-full animate-bounce opacity-60" style={{ animationDelay: '0.1s' }} />
+                      <div className="w-2 h-2 bg-[#4A6FA5] rounded-full animate-bounce opacity-60" style={{ animationDelay: '0.2s' }} />
                     </div>
                   </div>
                 </div>
@@ -237,31 +256,31 @@ export default function MinimalChatApp() {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-200 p-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-end space-x-3">
+        <div className="metallic-gradient border-t border-[#4A6FA5]/20 p-6 tech-shadow">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-end space-x-4">
               <div className="flex-1 relative">
                 <textarea
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 max-h-32"
+                  className="w-full px-4 py-3 pr-14 bg-[#1A1B1E]/50 border border-[#4A6FA5]/20 rounded-sm resize-none text-[#E5E5E5] placeholder-[#B0B0B0] focus:border-[#4A6FA5]/50 focus:bg-[#1A1B1E]/80 max-h-32 tech-shadow"
                   rows={1}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="absolute right-2 bottom-2 p-2 rounded-md bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors"
+                  className="absolute right-2 bottom-2 p-2.5 rounded-sm bg-[#4A6FA5] hover:bg-[#4A6FA5]/90 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all tech-shadow-lg hover:accent-glow"
                 >
-                  <Send size={16} />
+                  <Send size={14} />
                 </button>
               </div>
             </div>
             
-            <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+            <div className="flex justify-between items-center mt-3 text-xs text-[#B0B0B0]">
               <span>Press Enter to send, Shift+Enter for new line</span>
-              <span>{inputValue.length} characters</span>
+              <span className="tabular-nums">{inputValue.length} characters</span>
             </div>
           </div>
         </div>
