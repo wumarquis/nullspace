@@ -1,5 +1,5 @@
-import MinimalChatApp from '../components/MinimalChatApp';
+import DualPanelChatApp from '../components/DualPanelChatApp';
 
 export default function Home() {
-  return <MinimalChatApp />;
+  return <DualPanelChatApp />;
 }
