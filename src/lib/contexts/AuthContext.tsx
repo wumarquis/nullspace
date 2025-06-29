@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setFirebaseConfigured(true);
 
+    // Only subscribe to auth state changes if auth is properly configured
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
       setLoading(false);
