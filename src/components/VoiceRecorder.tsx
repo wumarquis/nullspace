@@ -1,58 +1,46 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Mic, MicOff } from 'lucide-react';
 import { useDeepgram } from '../lib/contexts/DeepgramContext';
-import { addDocument } from '../lib/firebase/firebaseUtils';
-import { motion } from 'framer-motion';
 
-export default function VoiceRecorder() {
-  const [isRecording, setIsRecording] = useState(false);
-  const { connectToDeepgram, disconnectFromDeepgram, connectionState, realtimeTranscript } = useDeepgram();
+interface VoiceRecorderProps {
+  onTranscription: (text: string) => void;
+  isRecording: boolean;
+  onRecordingChange: (recording: boolean) => void;
+}
 
-  const handleStartRecording = async () => {
-    await connectToDeepgram();
-    setIsRecording(true);
-  };
+export default function VoiceRecorder({ 
+  onTranscription, 
+  isRecording, 
+  onRecordingChange 
+}: VoiceRecorderProps) {
+  const { connectToDeepgram, disconnectFromDeepgram, realtimeTranscript } = useDeepgram();
 
-  const handleStopRecording = async () => {
-    disconnectFromDeepgram();
-    setIsRecording(false);
-    
-    // Save the note to Firebase
-    if (realtimeTranscript) {
-      await addDocument('notes', {
-        text: realtimeTranscript,
-        timestamp: new Date().toISOString(),
-      });
+  const handleToggleRecording = async () => {
+    if (isRecording) {
+      disconnectFromDeepgram();
+      if (realtimeTranscript) {
+        onTranscription(realtimeTranscript);
+      }
+      onRecordingChange(false);
+    } else {
+      await connectToDeepgram();
+      onRecordingChange(true);
     }
   };
 
   return (
-    <div className="w-full max-w-md">
-      <button
-        onClick={isRecording ? handleStopRecording : handleStartRecording}
-        className={`w-full py-2 px-4 rounded-full ${
-          isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
-        } text-white font-bold`}
-      >
-        {isRecording ? 'Stop Recording' : 'Start Recording'}
-      </button>
-      {isRecording && (
-        <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="w-8 h-8 bg-blue-500 rounded-full mx-auto mb-4"
-          />
-          <p className="text-sm text-gray-600">{realtimeTranscript}</p>
-        </div>
-      )}
-    </div>
+    <button
+      onClick={handleToggleRecording}
+      className={`p-3 rounded-full transition-all duration-200 ${
+        isRecording
+          ? 'bg-red-600 hover:bg-red-700 pulse-glow'
+          : 'bg-white/10 hover:bg-white/20'
+      }`}
+      title={isRecording ? 'Stop recording' : 'Start voice recording'}
+    >
+      {isRecording ? <MicOff size={20} /> : <Mic size={20} />}
+    </button>
   );
 }
