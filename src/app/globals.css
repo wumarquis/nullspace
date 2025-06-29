@@ -13,16 +13,17 @@ html, body {
 }
 
 body {
-  background: #1A1B1E;
-  color: #E5E5E5;
+  background: #1e1e1e;
+  color: #e0e0e0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Pro Display', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 14px;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -30,64 +31,196 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(74, 111, 165, 0.3);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(74, 111, 165, 0.5);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Text selection */
 ::selection {
-  background: rgba(74, 111, 165, 0.3);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Focus styles */
 input:focus, textarea:focus, button:focus {
-  outline: 1px solid #4A6FA5;
+  outline: 1px solid rgba(255, 255, 255, 0.2);
   outline-offset: 1px;
 }
 
 /* Smooth transitions */
 * {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s ease;
 }
 
-/* Metallic gradient utilities */
-.metallic-gradient {
-  background: linear-gradient(135deg, #1A1B1E 0%, #242529 50%, #1A1B1E 100%);
+/* Dark theme utilities */
+.dark-panel {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
 }
 
-.metallic-border {
-  border: 1px solid rgba(74, 111, 165, 0.2);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
+.dark-panel-secondary {
+  background: #252525;
+  border: 1px solid #333333;
 }
 
-.glass-effect {
-  backdrop-filter: blur(12px);
-  background: rgba(26, 27, 30, 0.8);
-  border: 1px solid rgba(74, 111, 165, 0.15);
+.dark-input {
+  background: #1e1e1e;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
 }
 
-.tech-shadow {
-  box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.3),
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+.dark-input:focus {
+  border-color: #4a4a4a;
+  background: #252525;
 }
 
-.tech-shadow-lg {
-  box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+.dark-button {
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  color: #e0e0e0;
 }
 
-.subtle-glow {
-  box-shadow: 0 0 20px rgba(74, 111, 165, 0.1);
+.dark-button:hover {
+  background: #4a4a4a;
+  border-color: #5a5a5a;
 }
 
-.accent-glow {
-  box-shadow: 0 0 20px rgba(74, 111, 165, 0.3);
+.text-primary {
+  color: #e0e0e0;
+}
+
+.text-secondary {
+  color: #a0a0a0;
+}
+
+.text-muted {
+  color: #707070;
+}
+
+.sidebar-item {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #a0a0a0;
+  font-size: 13px;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+}
+
+.sidebar-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.content-area {
+  background: #1e1e1e;
+  border-left: 1px solid #3a3a3a;
+}
+
+.capture-panel {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+}
+
+.post-content {
+  background: #252525;
+  border: 1px solid #333333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.post-content h3 {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+}
+
+.post-content p {
+  color: #a0a0a0;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.post-content ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.post-content li {
+  color: #a0a0a0;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.arrow-text {
+  color: #4a9eff;
+  font-weight: 500;
+}
+
+.post-button {
+  background: transparent;
+  border: 1px solid #3a3a3a;
+  color: #a0a0a0;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.post-button:hover {
+  border-color: #4a4a4a;
+  color: #e0e0e0;
+}
+
+.capture-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.capture-title {
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.capture-content {
+  padding: 16px;
+}
+
+.capture-item {
+  color: #a0a0a0;
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.capture-bullet {
+  color: #4a9eff;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.character-count {
+  color: #707070;
+  font-size: 11px;
+  text-align: right;
+  margin-top: 8px;
 }

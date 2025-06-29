@@ -1,5 +1,5 @@
-import AINoteTakingApp from '../components/AINoteTakingApp';
+import ReferenceMatchedApp from '../components/ReferenceMatchedApp';
 
 export default function Home() {
-  return <AINoteTakingApp />;
+  return <ReferenceMatchedApp />;
 }
