@@ -1,5 +1,5 @@
-import DualPanelChatApp from '../components/DualPanelChatApp';
+import AINoteTakingApp from '../components/AINoteTakingApp';
 
 export default function Home() {
-  return <DualPanelChatApp />;
+  return <AINoteTakingApp />;
 }
