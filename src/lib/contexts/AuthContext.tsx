@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  firebaseConfigured: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,13 +18,25 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
   signInWithGoogle: async () => {},
   signOut: async () => {},
+  firebaseConfigured: false,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [firebaseConfigured, setFirebaseConfigured] = useState(false);
 
   useEffect(() => {
+    // Check if Firebase auth is properly configured
+    if (!auth) {
+      console.warn('Firebase auth not configured. Please check your environment variables.');
+      setLoading(false);
+      setFirebaseConfigured(false);
+      return;
+    }
+
+    setFirebaseConfigured(true);
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUser(user);
       setLoading(false);
@@ -33,6 +46,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth) {
+      console.error('Firebase auth not configured');
+      return;
+    }
+
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
@@ -42,6 +60,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOutUser = async () => {
+    if (!auth) {
+      console.error('Firebase auth not configured');
+      return;
+    }
+
     try {
       await firebaseSignOut(auth);
     } catch (error) {
@@ -50,7 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOut: signOutUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      signInWithGoogle, 
+      signOut: signOutUser,
+      firebaseConfigured 
+    }}>
       {children}
     </AuthContext.Provider>
   );
